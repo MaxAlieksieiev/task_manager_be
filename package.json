@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for internet shop",
+  "main": "index.js",
+  "scripts": {
+    "run": "nodemon app.js",
+    "db:migration:create": "npx sequelize-cli migration:create --name ",
+    "db:seed:create": "npx sequelize-cli seed:generate --name ",
+    "db:migration:run": "npx sequelize-cli db:migrate",
+    "db:migration:undo": "npx sequelize-cli db:migrate:undo --name",
+    "db:seed": "npx sequelize-cli db:seed --seed ",
+    "db:seed:undo": "npx sequelize-cli db:seed:undo --seed ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "path": "^0.12.7",
+    "pg": "^8.9.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.33.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.20"
+  }
+}
