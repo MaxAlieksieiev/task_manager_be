@@ -7,7 +7,7 @@ require('dotenv').config({
 });
 
 const db = require('./models/index.js');
-
+const routes = require('./routes');
 const corsOptions = {
   origin: 'http://localhost:4200',
 };
@@ -25,7 +25,7 @@ db.sequelize.sync()
       console.log('Failed to sync db: ' + err.message);
     });
 
-
 app.listen(process.env.PORT || 8080, () => {
   console.log('Server run on 8080');
 });
+routes.init(app);
