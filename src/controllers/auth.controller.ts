@@ -1,10 +1,12 @@
+import {Request, Response} from "express";
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../models');
 const User = db.user;
 const RefreshToken = db.refreshToken;
 
-const signUp = async (req, res) => {
+export const signUp = async (req: Request, res: Response) => {
   const {email, password, phone} = req.body;
   try {
     const user = await User.create({
@@ -15,12 +17,12 @@ const signUp = async (req, res) => {
     if (user) {
       res.status(200).send({message: 'User was registered successfully!'});
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({message: error.message});
   }
 };
 
-const signIn = async (req, res) => {
+export const signIn = async (req: Request, res: Response): Promise<any> => {
   try {
     const {email, password} = req.body;
     const user = await User.findOne({
@@ -29,6 +31,7 @@ const signIn = async (req, res) => {
       },
       attributes: ['id', 'email', 'phone', 'password'],
     });
+    console.log('user', user);
 
     if (!user) {
       return res.status(404).send({
@@ -55,12 +58,12 @@ const signIn = async (req, res) => {
       accessToken: token,
       refreshToken,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({message: error.message});
   }
 };
 
-const refreshToken = async (req, res) => {
+export const refreshToken = async (req: Request, res: Response): Promise<any> => {
   const {refreshToken: requestToken} = req.body;
 
   if (!requestToken) {
@@ -94,9 +97,8 @@ const refreshToken = async (req, res) => {
         message: 'Refresh token was expired. Please make a new signin request',
       });
     }
-
-    const user = await refreshToken.getUser();
-    const userId = user?.dataValues?.id;
+    console.log('refreshToken', refreshToken);
+    const userId = await refreshToken.user.id;
 
     if (!userId) {
       return res.status(404).send({
@@ -111,15 +113,8 @@ const refreshToken = async (req, res) => {
       newAccessToken: newAccessToken,
       refreshToken: refreshToken.token,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({message: error.message});
   }
 };
 
-const authController = {
-  signIn: signIn,
-  signUp: signUp,
-  refreshToken: refreshToken,
-};
-
-module.exports = authController;

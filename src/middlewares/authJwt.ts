@@ -1,8 +1,10 @@
-const jwt = require('jsonwebtoken');
+import {Request, Response} from "express";
+import { jwt } from 'jsonwebtoken';
+
 const {TokenExpiredError} = jwt;
 require('dotenv');
 
-const catchError = (err, res) => {
+const catchError = (err: any, res: Response) => {
   if (err instanceof TokenExpiredError) {
     return res.status(401).send({
       message: 'Unauthorized! Access Token was expired!',
@@ -12,7 +14,7 @@ const catchError = (err, res) => {
   return res.sendStatus(401).send({message: 'Unauthorized!'});
 };
 
-verifyToken = (req, res, next) => {
+export const verifyToken = (req: Request, res: Response, next: any): any => {
   const token = req.headers['x-access-token'];
 
   if (!token) {
@@ -21,17 +23,12 @@ verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, (err: any, decoded: any): any => {
     if (err) {
       return catchError(err, res);
     }
+    // @ts-ignore
     req.userId = decoded.id;
     next();
   });
 };
-
-const authJwt = {
-  verifyToken: verifyToken,
-};
-
-module.exports = authJwt;

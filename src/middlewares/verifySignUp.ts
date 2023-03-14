@@ -1,7 +1,11 @@
-const db = require('../models');
+// @ts-ignore
+import {Request, Response} from "express";
+import { db } from '../models'
+
 const User = db.user;
 
-checkDuplicateEmail = async (req, res, next) => {
+// @ts-ignore
+export const checkDuplicateEmail = async (req: Request, res: Response, next: any) => {
   const user = await User.findOne({
     where: {
       email: req.body.email,
@@ -16,9 +20,3 @@ checkDuplicateEmail = async (req, res, next) => {
     );
   }
 };
-
-const verifySigUp = {
-  checkDuplicateEmail: checkDuplicateEmail,
-};
-
-module.exports = verifySigUp;

@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
     const expiredAt = new Date();
 
     expiredAt.setSeconds(
-        expiredAt.getSeconds() + process.env.JWT_REFRESH_EXPIRATION,
+        expiredAt.getSeconds() + +process.env.JWT_REFRESH_EXPIRATION,
     );
 
     const _token = uuidv4();
