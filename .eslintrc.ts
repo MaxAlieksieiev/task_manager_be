@@ -1,4 +1,5 @@
 module.exports = {
+  'parser': '@typescript-eslint/parser',
   'env': {
     'browser': true,
     'commonjs': true,
@@ -9,6 +10,7 @@ module.exports = {
   ],
   'parserOptions': {
     'ecmaVersion': 'latest',
+    "sourceType": "module"
   },
   'rules': {
   },
