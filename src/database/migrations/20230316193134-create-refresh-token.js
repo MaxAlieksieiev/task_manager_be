@@ -4,7 +4,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
-
     try {
       await queryInterface.createTable('refreshTokens', {
         id: {
@@ -25,6 +24,14 @@ module.exports = {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
       }, {transaction});
       await transaction.commit();
     } catch (error) {
