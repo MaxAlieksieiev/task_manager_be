@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import MainRouter from "./api/routers/main.router";
+
+const db = require('./api/models');
 export class Server {
   public app: express.Application;
 
@@ -27,10 +29,21 @@ export class Server {
   }
 
   routes() {
+    this.app.use(function(req, res, next) {
+      res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+      );
+      next();
+    });
     this.app.use('/api/v1', MainRouter);
   }
 
   run() {
+    db.sequelize.sync().then(result=>{
+      console.log('sync models in db', !!result);
+    })
+      .catch(err=> console.log(err));
     this.app.listen(process.env.PORT);
     console.log(`App works on ${process.env.PORT}`);
   }
@@ -38,7 +51,7 @@ export class Server {
 }
 
 require('dotenv').config({
-  path: path.join(__dirname + '/../dev.env'),
+  path: path.join(__dirname + '/../.env'),
 });
 
 const server = new Server();
